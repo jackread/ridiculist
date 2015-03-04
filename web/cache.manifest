@@ -1,0 +1,30 @@
+CACHE MANIFEST
+
+/img/mob-nav-arrow.png
+/img/logo@2x.png
+/img/loading-logo@2x.png
+
+# zerver:js/main.min.js
+/js/libs/jquery.2.0.3.min.js
+/js/libs/bootstrap.3.2.0.min.js
+/js/libs/fastclick.js
+/js/libs/firebase.js
+/js/libs/twemoji.min.js
+/js/libs/twitter-widgets.js
+/js/libs/underscore.1.5.2.min.js
+/js/libs/backbone.1.1.2.min.js
+/js/libs/fansi-player.min.js
+/js/libs/swipe.js
+/js/libs/db.js
+/js/views/msg.js
+/js/views/errors.js
+/js/collections.js
+/js/models.js
+/js/views/utilities.js
+/js/views/subviews.js
+/js/views/pages.js
+/js/main.js
+# /zerver
+
+NETWORK:
+*

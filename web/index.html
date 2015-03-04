@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>XO</title>
+		<meta name="description" content="Join the XO movement">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="icon" href="/img/favicon@2x.png">
+		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="/css/font-awesome.min.css">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+		<style>
+			html, body {
+				background: #000;
+				color: #FFF;
+				font-family: "Open Sans";
+				font-size: 20px;
+				margin: 0;
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 30px;
+				margin: 0 10px 30px 10px;
+				border-bottom: 2px solid #191919;
+				padding: 0 0 10px 0;
+			}
+
+			h2 {
+				font-size: 14px;
+				text-transform: uppercase;
+				color: #666;
+				letter-spacing: 2px;
+				font-weight: bold;
+				margin: 0 0 5px 0;
+				padding: 0;
+			}
+
+			p {
+				margin: 0;
+				padding: 0;
+			}
+
+			p strong {
+				color: #666;
+				font-weight: bold;
+				font-size: 16px;
+			}
+
+			i.fa {
+				color: #191919;
+				padding: 0 20px 0 0;
+				font-size: 44px;
+				-webkit-transition: color 300ms ease-in-out;
+			}
+
+			.overflow {
+				overflow: hidden;
+			}
+
+			.checklist {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+
+			.checkbox {
+				display: block;
+				margin: 0 !important;
+				padding: 10px;
+				cursor: pointer;
+				height: 80px;
+				overflow: hidden;
+				-webkit-transition: background 300ms ease-in-out;
+			}
+
+			.checkbox:hover {
+				background: #191919;
+			}
+
+			.checkbox:hover i.fa {
+				color: #333;
+			}
+
+			.checkbox.faded h2,
+			.checkbox.faded p {
+				color: #444;
+			}
+
+			.checkbox.faded i.fa {
+				color: #F09;
+				-webkit-animation: color-pulse 30s linear infinite alternate;
+			}
+
+			.progress-bar {
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				width: 100%;
+				height: 40px;
+				background: #191919;
+			}
+
+			.progress-inner {
+				height: 100%;
+				width: 0%;
+				background: #f09;
+				position: relative;
+				-webkit-transition: width 500ms ease-in-out;
+				-webkit-animation: background-pulse 30s linear infinite alternate;
+			}
+
+			.progress-percent {
+				color: #666;
+				height: 100%;
+				width: 80px;
+				position: absolute;
+				text-align: center;
+				right: -80px;
+				top: 0px;
+				line-height: 40px;
+			}
+
+			.success-msg {
+				color: #FFF;
+				font-size: 220px;
+				font-weight: bold;
+				text-align: center;
+				line-height: 400px;
+				height: 400px;
+				width: 100%;
+				position: absolute;
+				top: 50%;
+				left: 0px;
+				margin-top: -200px;
+				display: none;
+				-webkit-transform: scale3d(1, 1, 1);
+			}
+
+			.success-msg.active {
+				display: block;
+				-webkit-animation: size-pulse 200ms ease-in-out infinite;
+			}
+			
+			@-webkit-keyframes background-pulse { 
+				20%  { background-color: #FFE019; }
+				40%  { background-color: #14BFCC; }
+				60%  { background-color: #B21272; }
+				80%  { background-color: #09A7B2; }
+				100% { background-color: #F09; }
+			}
+
+			@-webkit-keyframes color-pulse { 
+				20%  { color: #FFE019; }
+				40%  { color: #14BFCC; }
+				60%  { color: #B21272; }
+				80%  { color: #09A7B2; }
+				100% { color: #F09; }
+			}
+
+			@-webkit-keyframes size-pulse { 
+				50%  { -webkit-transform: scale3d(1.2, 1.2, 1.2); }
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<div class="row">
+			<h1>Launch Checklist</h1>
+			<ul class="checklist">
+				<li class="checkbox tpl col-lg-6">
+					<div class="pull-left"><i class="fa fa-circle-o"></i></div>
+					<div class="overflow">
+						<h2></h2>
+						<p></p>
+					</div>
+					<div class="clearfix"></div>
+				</li>
+			</ul>	
+		</div>
+
+		<div class="progress-bar">
+			<div class="progress-inner">
+				<div class="progress-percent">30%</div>
+			</div>
+		</div>
+
+		<div class="success-msg">SHOTS!</div>
+
+		<!-- zerver:/js/main.min.js -->
+		<script src="/js/libs/jquery.2.0.3.min.js"></script>
+		<script src="/js/libs/bootstrap.3.2.0.min.js"></script>
+		<script src="/js/libs/underscore.1.5.2.min.js"></script>
+		<script src="/js/libs/backbone.1.1.2.min.js"></script>
+		<script src="/js/libs/db.js"></script>
+		<!-- /zerver -->
+
+		<script>
+
+			var view = Backbone.View.extend({
+				el : '.checklist',
+				initialize: function() {
+					var _this = this;
+
+					this.$itemTpl = this.$el.find('.tpl');
+					this.$itemTpl.remove();
+
+					this.collection = new collection([
+						{ checked: false, id: 1, title: "AppStore listing/pricing", para: "All copy and screenshots, get the app ready to submit.", assigned: "@joelauge + @joshmitch" },
+						{ checked: false, id: 2, title: "Keen.io Events", para: "make sure we're tracking everything that needs to be tracked.", assigned: "@cembakar + @joelauge +@jack" },
+						{ checked: false, id: 3, title: "HTML5 Home page", para: "Create a landing page for the app to increase downloads.", assigned: "@joshmitch + @julian" },
+						{ checked: false, id: 4, title: "Native App tour", para: "Add INTRO text to top of tour, add backgrounds to login, signup, forgot.", assigned: "@jack" },
+						{ checked: false, id: 5, title: "Capture App", para: "Get video filters working.", assigned: "@kylebrooks" },
+						{ checked: false, id: 6, title: "Native App subscription page", para: "Copy behaviour from HTML5 for upgrade after downgrade.", assigned: "@jon" },
+						{ checked: false, id: 7, title: "HTML5 QA / browser testing", para: "Browser testing with litmus and a general QA pass of everything (get user flows from @julian).", assigned: "@julian + @erica + @cem" },
+						{ checked: false, id: 8, title: "Native app QA", para: "General QA pass of everything.", assigned: "@erica + @joelauge + @cem" },
+						{ checked: false, id: 9, title: "Content review", para: "Fill the app with content and comments. Make sure all the pages paginate.", assigned: "@joelauge + @erica" },
+						{ checked: false, id: 10, title: "Design review", para: "(send to the Weeknd team first), review everything for design consistency.", assigned: "@joelauge + @joshmitch" },
+						{ checked: false, id: 11, title: "Privacy Policy", para: "Add to website and native app.", assigned: "@joelauge + @julian" },
+						{ checked: false, id: 12, title: "App Store Links", para: "Make sure we are pointing to live app store before launch.", assigned: "@joelauge + @julian" },
+						{ checked: false, id: 13, title: "Update Fan.si homepage", para: "Copy changes on the home view.", assigned: "@joelauge + @julian" },
+						{ checked: false, id: 14, title: "Remove optimizely", para: "Get rid of optimizely on the master branch.", assigned: "@jon" },
+						{ checked: false, id: 15, title: "Fix team accounts", para: "Update passwords for team accounts to \"theweeknd\".", assigned: "@erica" },
+						{ checked: false, id: 16, title: "Fix native fans manage subscription bug.", para: "New user > manage subscriptions > click upgrade.", assigned: "@jack" },
+						{ checked: false, id: 17, title: "Reset password bug.", para: "Reset password clicks are being redirected.", assigned: "@julian" },
+						{ checked: false, id: 18, title: "Android Tour", para: "Fix android lagginess in tour.", assigned: "@jack" },
+						{ checked: false, id: 19, title: "Native App Sharing", para: "Implement sharing in native app.", assigned: "@julian" },
+					]);
+
+					this.collection.checkChecked();
+
+					var frag = document.createDocumentFragment();
+					_.each(this.collection.models, function(model) {
+						frag.appendChild(_this.renderItem(model)[0]);
+					});
+
+					this.$el.html(frag);
+				},
+				renderItem: function(model) {
+					var $node = this.$itemTpl.clone();
+					$node.attr("data-id", model.get("id"));
+					$node.find("h2").text(model.get("title"));
+					$node.find("p").html(model.get("para") + " <strong><small>" + model.get("assigned") + "</small></strong>");
+					if (model.get("checked")) {
+						$node.addClass("faded")
+						$node.find("i.fa").replaceWith("<i class='fa fa-check-circle-o white'></i>");
+					}
+					return $node;
+				},
+				events: {
+					"click .checkbox" : "toggleChecked",
+				},
+				toggleChecked: function(e) {
+					var $item = $(e.currentTarget);
+					var model = this.collection.get($item.attr('data-id'));
+
+					model.set("checked", !model.get("checked"))
+					$item.replaceWith(this.renderItem(model));
+
+					if (model.get("checked")) {
+						$('.success-msg').addClass('active');
+						setTimeout(function() {
+							$('.success-msg').removeClass('active');
+						}, 5000);
+					}
+				}
+			});
+
+			var model = Backbone.Model.extend({});
+
+			var collection = Backbone.Collection.extend({
+				storageKey: "launchChecklist",
+				model: model,
+				initialize: function() {
+                	this.on("change:checked", this.saveToDB, this);
+				},
+				checkChecked: function() {
+					var _this = this,
+						local = DB.read(this.storageKey);
+
+					if (local) {
+						_.each(local, function(model) {
+							var m = _this.get(model.id);
+							if (m) m.set({ "checked": model.checked }, { silent: true });
+						});
+					}
+
+					this.updateProgress();
+				},
+				saveToDB: function(model, val, options) {
+					DB.write(this.storageKey, this.models);
+
+					//update progress
+					this.updateProgress();
+				},
+				updateProgress: function() {
+					var checked = this.where({ "checked": true });
+					var percent = parseInt((100/this.models.length) * checked.length);
+					$('.progress-inner').css("width", percent + "%");
+					$('.progress-percent').text(percent + "%");
+				},
+			});
+
+			new view();
+
+		</script>
+
+	</body>
+</html>
