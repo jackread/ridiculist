@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>XO</title>
+		<title>AWSM TODO</title>
 		<meta name="description" content="Join the XO movement">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -206,54 +206,29 @@
 
 		<script>
 
+			var tasks;
+
 			var view = Backbone.View.extend({
 				el : '.checklist',
 				initialize: function() {
 					var _this = this;
 
 					this.player = $('.player')[0];
-					console.log(this.player);
 
 					this.$itemTpl = this.$el.find('.tpl');
 					this.$itemTpl.remove();
 
-					this.collection = new collection([
-						{ checked: false, id: 1, title: "AppStore listing/pricing", para: "All copy and screenshots, get the app ready to submit.", assigned: "@joelauge + @joshmitch" },
-						{ checked: false, id: 2, title: "Keen.io Events", para: "make sure we're tracking everything that needs to be tracked.", assigned: "@cembakar" },
-						{ checked: false, id: 3, title: "HTML5 Home page", para: "Create a landing page for the app to increase downloads.", assigned: "@jack" },
-						{ checked: false, id: 4, title: "Native App tour", para: "Add INTRO text to top of tour, add backgrounds to login, signup, forgot.", assigned: "@jack" },
-						{ checked: false, id: 5, title: "Capture App", para: "Get video filters working.", assigned: "@kylebrooks" },
-						{ checked: false, id: 6, title: "Native App subscription page", para: "Copy behaviour from HTML5 for upgrade after downgrade.", assigned: "@jon" },
-						{ checked: false, id: 7, title: "HTML5 QA / browser testing", para: "Browser testing with litmus and a general QA pass of everything (get user flows from @julian).", assigned: "@julian + @erica + @cem" },
-						{ checked: false, id: 8, title: "Native app QA", para: "General QA pass of everything.", assigned: "@erica + @joelauge + @cem" },
-						{ checked: false, id: 9, title: "Content review", para: "Fill the app with content and comments. NEEDS LOCKED ITEMS", assigned: "@joelauge + @erica" },
-						{ checked: false, id: 10, title: "Design review", para: "(send to the Weeknd team first), review everything for design consistency.", assigned: "@joelauge + @joshmitch" },
-						{ checked: false, id: 11, title: "Privacy Policy", para: "Add to website and native app.", assigned: "@joelauge + @julian" },
-						{ checked: false, id: 12, title: "App Store Links", para: "Make sure we are pointing to live app store before launch.", assigned: "@joelauge + @julian" },
-						{ checked: false, id: 13, title: "Update Fan.si homepage", para: "Copy changes on the home view.", assigned: "@joelauge + @julian" },
-						{ checked: false, id: 14, title: "Remove optimizely", para: "Get rid of optimizely on the master branch.", assigned: "@jon" },
-						{ checked: false, id: 15, title: "Fix team accounts", para: "Update passwords for team accounts to \"theweeknd\".", assigned: "@erica" },
-						{ checked: false, id: 16, title: "Fix native fans manage subscription bug.", para: "New user > manage subscriptions > click upgrade.", assigned: "@jack" },
-						{ checked: false, id: 17, title: "Reset password bug.", para: "Reset password clicks are being redirected.", assigned: "@julian" },
-						{ checked: false, id: 18, title: "Android Tour", para: "Fix android lagginess in tour.", assigned: "@jack" },
-						{ checked: false, id: 19, title: "Native App Sharing", para: "Implement sharing in native app.", assigned: "@julian" },
-						{ checked: false, id: 20, title: "Apple Contracts", para: "Do all the contracts so we can use itunes connect again.", assigned: "@joel" },
-						{ checked: false, id: 21, title: "Create fake social accounts", para: "Test posting to social media from Capture",  assigned: "@jon" },
-						{ checked: false, id: 22, title: "Post a video POV", para: "test video, hosted by vimeo, in POV", assigned: "@jon" },	
-						{ checked: false, id: 23, title: "Review all emails", para: "test all the emails after jons refactor", assigned: "@jon + @erica" },	
-						{ checked: false, id: 24, title: "Capture app iPhone 6+ formatting", para: "Get the layout looking good on iPhone 6+", assigned: "@kyle" },
-						{ checked: false, id: 25, title: "Capture app review", para: "review the app and make a hitlist for monday.", assigned: "@kyle + @joel + @joshmitch + @jack" },
-						{ checked: false, id: 26, title: "Stripe API refactor", para: "make sure Master and Weeknd are using latest Stripe API.", assigned: "@erica" },
-					]);
-
-					this.collection.checkChecked();
+					tasks = new collection();
+					this.listenTo(tasks,'add', this.addItem);
+					this.listenTo(tasks,'remove', this.removeItem);
 
 					var frag = document.createDocumentFragment();
-					_.each(this.collection.models, function(model) {
+					_.each(tasks.models, function(model) {
 						frag.appendChild(_this.renderItem(model)[0]);
 					});
 
 					this.$el.html(frag);
+					this.updateProgress();
 				},
 				renderItem: function(model) {
 					var $node = this.$itemTpl.clone();
@@ -266,12 +241,20 @@
 					}
 					return $node;
 				},
+				addItem: function (model) {
+					this.$el.append(this.renderItem(model));
+					this.updateProgress();	
+				},
+				removeItem: function (model) {
+					this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
+					this.updateProgress();
+				},
 				events: {
 					"click .checkbox" : "toggleChecked",
 				},
 				toggleChecked: function(e) {
 					var $item = $(e.currentTarget);
-					var model = this.collection.get($item.attr('data-id'));
+					var model = tasks.get($item.attr('data-id'));
 					var _this = this;
 
 					model.set("checked", !model.get("checked"))
@@ -284,15 +267,32 @@
 							$('.success-msg').removeClass('active');
 						}, 16000);
 					}
-				}
+				},
+				updateProgress: function() {
+					var checked = tasks.where({ "checked": true });
+					var percent = parseInt((100/tasks.models.length) * checked.length);
+					$('.progress-inner').css("width", percent + "%");
+					$('.progress-percent').text(percent + "%");
+				},
 			});
 
-			var model = Backbone.Model.extend({});
+			var model = Backbone.Model.extend({
+				validate: function(attrs, options) {
+					if (!attrs || !attrs.title || !attrs.para || !attrs.assigned) {
+						var msg = "missing required fields";
+						console.error(msg);
+				      	return msg;
+				    }
+				},
+			});
 
 			var collection = Backbone.Collection.extend({
 				storageKey: "launchChecklist",
 				model: model,
 				initialize: function() {
+					this.set(DB.read(this.storageKey));
+					this.on("add", this.saveToDB, this);
+					this.on("remove", this.saveToDB, this);
                 	this.on("change:checked", this.saveToDB, this);
 				},
 				checkChecked: function() {
@@ -310,19 +310,23 @@
 				},
 				saveToDB: function(model, val, options) {
 					DB.write(this.storageKey, this.models);
-
-					//update progress
-					this.updateProgress();
-				},
-				updateProgress: function() {
-					var checked = this.where({ "checked": true });
-					var percent = parseInt((100/this.models.length) * checked.length);
-					$('.progress-inner').css("width", percent + "%");
-					$('.progress-percent').text(percent + "%");
 				},
 			});
 
 			new view();
+
+			window.todoAPI = {
+				addItem : function(payload) {
+					payload['id'] = tasks.models.length+1;
+					var m = new model();
+					m.set(payload, { validate:true });
+					tasks.add(m);
+				},
+				removeItem : function(model_id) {
+					var model = tasks.get(model_id);
+					tasks.remove(model);
+				},
+			}
 
 		</script>
 
