@@ -190,6 +190,12 @@
 
 		<div class="success-msg">SHOTS!</div>
 
+		<audio class="player" preload>
+			<source src="/audio/final-countdown.ogg" type="audio/ogg" />
+			<source src="/audio/final-countdown.mp3" type="audio/mp3" />
+			Your browser does not support the audio element.
+		</audio>
+
 		<!-- zerver:/js/main.min.js -->
 		<script src="/js/libs/jquery.2.0.3.min.js"></script>
 		<script src="/js/libs/bootstrap.3.2.0.min.js"></script>
@@ -205,6 +211,9 @@
 				initialize: function() {
 					var _this = this;
 
+					this.player = $('.player')[0];
+					console.log(this.player);
+
 					this.$itemTpl = this.$el.find('.tpl');
 					this.$itemTpl.remove();
 
@@ -217,7 +226,7 @@
 						{ checked: false, id: 6, title: "Native App subscription page", para: "Copy behaviour from HTML5 for upgrade after downgrade.", assigned: "@jon" },
 						{ checked: false, id: 7, title: "HTML5 QA / browser testing", para: "Browser testing with litmus and a general QA pass of everything (get user flows from @julian).", assigned: "@julian + @erica + @cem" },
 						{ checked: false, id: 8, title: "Native app QA", para: "General QA pass of everything.", assigned: "@erica + @joelauge + @cem" },
-						{ checked: false, id: 9, title: "Content review", para: "Fill the app with content and comments. Make sure all the pages paginate... NEEDS SOME LOCKED ITEMS", assigned: "@joelauge + @erica" },
+						{ checked: false, id: 9, title: "Content review", para: "Fill the app with content and comments. NEEDS LOCKED ITEMS", assigned: "@joelauge + @erica" },
 						{ checked: false, id: 10, title: "Design review", para: "(send to the Weeknd team first), review everything for design consistency.", assigned: "@joelauge + @joshmitch" },
 						{ checked: false, id: 11, title: "Privacy Policy", para: "Add to website and native app.", assigned: "@joelauge + @julian" },
 						{ checked: false, id: 12, title: "App Store Links", para: "Make sure we are pointing to live app store before launch.", assigned: "@joelauge + @julian" },
@@ -263,15 +272,17 @@
 				toggleChecked: function(e) {
 					var $item = $(e.currentTarget);
 					var model = this.collection.get($item.attr('data-id'));
+					var _this = this;
 
 					model.set("checked", !model.get("checked"))
 					$item.replaceWith(this.renderItem(model));
 
 					if (model.get("checked")) {
+						_this.player.play();
 						$('.success-msg').addClass('active');
 						setTimeout(function() {
 							$('.success-msg').removeClass('active');
-						}, 5000);
+						}, 16000);
 					}
 				}
 			});
