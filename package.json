@@ -1,5 +1,5 @@
 {
-  "name": "fansi-html5",
+  "name": "ridiculist",
   "version": "0.0.1",
   "engines": {
     "node": "0.10.x",
@@ -9,6 +9,6 @@
     "zerver": "0.15.x"
   },
   "scripts": {
-    "start": "zerver -rVM index.html --port=13080 web"
+    "start": "zerver -rVM index.html --port=1337 web"
   }
 }
