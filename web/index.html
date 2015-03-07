@@ -139,7 +139,7 @@
 
 			.pump-it {
 				color: #FFF;
-				font-size: 210px;
+				font-size: 80px;
 				font-weight: bold;
 				text-align: center;
 				line-height: 400px;
@@ -151,6 +151,12 @@
 				margin-top: -200px;
 				-webkit-transform: scale3d(1, 1, 1);
 				-webkit-animation: size-pulse 200ms ease-in-out infinite;
+			}
+
+			@media (min-width: 768px) {
+				.pump-it {
+					font-size: 180px;
+				}
 			}
 
 			.success-msg {
@@ -231,7 +237,7 @@
 	<body>
 
 		<div id="splash" class="fade-out">
-			<h1>AWSM List 1.0</h1>
+			<h1>AWSM List <small>1.0</small></h1>
 		</div>
 
 		<div id="content" class="row">
@@ -254,7 +260,7 @@
 			<div id="done">
 				<h3>DONE</h3>
 				<ul class="checklist">
-					<li class="checkbox tpl col-lg-4 faded">
+					<li class="checkbox tpl col-sm-6 col-md-4 faded">
 						<div class="pull-left"><i class="fa fa fa-check-circle-o"></i></div>
 						<div class="overflow">
 							<h4></h4>
@@ -321,10 +327,24 @@
 					return $node;
 				},
 				addItem: function (model) {
-					this.$el.removeClass("hidden").find("ul").append(this.renderItem(model));
-					/*$('html, body').animate({
-				        scrollTop: this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").offset().top
-				    }, 500);*/
+					this.$el.removeClass("hidden");
+					var $node = this.renderItem(model),
+						m_id  = "";
+
+					_.each(this.collection.models, function(m) {
+						if (!m_id && m.get("id") > model.get("id")) {
+							m_id = m.get("id");
+						}
+					});
+
+					if (m_id) {
+						var $elder = this.$el.find(".checkbox[data-id='"+ m_id +"']");
+						$node.insertBefore($elder);
+					}
+					else {
+						this.$el.find("ul").append($node);
+					}
+	
 				},
 				removeItem: function (model) {
 					this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
@@ -461,6 +481,7 @@
 			});
 
 			var collection = Backbone.Collection.extend({
+				comparator: "id",
 				storageKey: "AWSM-TODO",
 				model: task,
 				initialize: function(models, options) {
