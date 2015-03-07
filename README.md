@@ -6,10 +6,12 @@ Probably the most ridiculous list you've ever seen.
 **INSTALLATION**
 
 **install node dependancies**
-    ```npm install```
+
+```npm install```
     
 **start the server**
-    ```npm start```
+
+```npm start```
     
 
 **USAGE**
