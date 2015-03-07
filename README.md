@@ -1,97 +1,32 @@
-fansi-html5
+RIDICULIST
 ===========
 
-BackboneJS/HTML5 responsive web client for https://www.fan.si
+Probably the most ridiculous list you've ever seen.
 
-TO SWITCH API BETWEEN DEBUG(LOCAL)/DEV/PROD
+INSTALLATION
 
-**local debug @ localhost:13080:**
-<pre>
-  <code>
-			boneboiler = {
-				'views'       : {},
-				'models'      : {},
-				'collections' : {},
-				'msg'         : {},
-				'err'         : {},
-				'config'      : {
-					'api_url' 	  : 'http://localhost:8080',
-					'api_version' : 'prod',
-					'app_version' : '0.0.1',
-					'app_mode'    : 'debug',
-					'title'       : 'XO',
-					'description' : 'Join the XO movement',
-					'web_url'     : 'http://localhost:13080',
-					'stripe_key'  : 'pk_test_4ObuvKrPHRA5tFWNpi2MB1pk'
-				}
-			}
-  </code>
-</pre>
-
-**remote dev @ VERSION.centering-helix-748.appspot.com**
-<pre>
-  <code>
-			boneboiler = {
-				'views'       : {},
-				'models'      : {},
-				'collections' : {},
-				'msg'         : {},
-				'err'         : {},
-				'config'      : {
-					'api_url' 	  : 'http://localhost:8080',
-					'api_version' : 'VERSION',
-					'app_version' : '0.0.1',
-					'app_mode'    : 'dev',
-					'title'       : 'XO',
-					'description' : 'Join the XO movement',
-					'web_url'     : 'http://localhost:13080',
-					'stripe_key'  : 'pk_test_4ObuvKrPHRA5tFWNpi2MB1pk'
-				}
-			}
-  </code>
-</pre>
-
-**remote production @ xo-api.theweeknd.com**
-<pre>
-  <code>
-			boneboiler = {
-				'views'       : {},
-				'models'      : {},
-				'collections' : {},
-				'msg'         : {},
-				'err'         : {},
-				'config'      : {
-					'api_url' 	  : 'http://localhost:8080',
-					'api_version' : 'prod',
-					'app_version' : '0.0.1',
-					'app_mode'    : 'prod',
-					'title'       : 'XO',
-					'description' : 'Join the XO movement',
-					'web_url'     : 'http://localhost:13080',
-					'stripe_key'  : 'pk_test_4ObuvKrPHRA5tFWNpi2MB1pk'
-				}
-			}
-  </code>
-</pre>
-
-
-TO RUN LOCALLY
-
-if you haven't installed node dependancies
-
-    npm install
+install node dependancies
+    ```npm install```
     
 start the server
-
-    npm start
-
-
-TO DEPLOY
-
-add remote if not added yet
-
-    git remote add heroku git@heroku.com:fansi-html5.git
+    ```npm start```
     
-push to heroku
 
-    git push heroku master
+USAGE
+
+currently, you manage tasks using the console in your browser.
+
+adding a task
+```
+todoAPI.addItem({
+  "title" : "short description",
+  "para"  : "this is a much longer description for this task",
+  "assigned" : "@joel + @jack"
+});
+```
+
+remove a task
+```
+todoAPI.removeDoneItem(item_id);
+todoAPI.removeDoingItem(item_id);
+```
