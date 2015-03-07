@@ -56,16 +56,16 @@ a message, chosen at random, that is shown everytime you complete a task
 
 a track, chosen at random, that is played everytime you complete a task
 
-```successText: ["final-countdown", "Shots!"]```
+```successAudio: ["final-countdown", "Shots!"]```
 
 **winText**
 
 a message that is displayed when you complete the list
 
-```successText: "MONEY!"```
+```winText: "MONEY!"```
 
 **winAudio**
 
 a track that is played when you complete the list
 
-```successText: "final-countdown"```
+```winAudio: "final-countdown"```
