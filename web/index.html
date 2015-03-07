@@ -137,7 +137,7 @@
 				font-size: 20px;
 			}
 
-			.success-msg {
+			.pump-it {
 				color: #FFF;
 				font-size: 210px;
 				font-weight: bold;
@@ -149,13 +149,16 @@
 				top: 50%;
 				left: 0px;
 				margin-top: -200px;
-				display: none;
 				-webkit-transform: scale3d(1, 1, 1);
+				-webkit-animation: size-pulse 200ms ease-in-out infinite;
 			}
 
-			.success-msg.active {
-				display: block;
-				-webkit-animation: size-pulse 200ms ease-in-out infinite;
+			.success-msg {
+				display: none;
+			}
+
+			.active {
+				display: block!important;
 			}
 			
 			@-webkit-keyframes background-pulse { 
@@ -184,7 +187,8 @@
 				left: 0px;
 				width: 100%;
 				height: 100%;
-				background: #000;
+				background: #f09;
+				-webkit-animation: background-pulse 3.5s linear infinite alternate;
 				text-align: center;
 				line-height: 100%;
 				z-index: 2;
@@ -198,6 +202,7 @@
 				width: 100%;
 				line-height: 100px;
 				margin-top: -50px;
+				font-size: 90px;
 			}
 
 			.fade-out {
@@ -209,12 +214,24 @@
 			@-webkit-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 			@-moz-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 			@keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+
+			.win-msg {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background: #f09;
+				-webkit-animation: background-pulse 2s linear infinite alternate;
+				color: #FFF;
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
 
 		<div id="splash" class="fade-out">
-			<h1>Launch Checklist</h1>
+			<h1>AWSM List 1.0</h1>
 		</div>
 
 		<div id="content" class="row">
@@ -254,6 +271,7 @@
 					</div>
 				</div>
 				<div class="success-msg"></div>
+				<div class="win-msg"></div>
 				<audio class="player" preload></audio>
 			</div>
 		</div>
@@ -304,9 +322,9 @@
 				},
 				addItem: function (model) {
 					this.$el.removeClass("hidden").find("ul").append(this.renderItem(model));
-					$('html, body').animate({
+					/*$('html, body').animate({
 				        scrollTop: this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").offset().top
-				    }, 500);
+				    }, 500);*/
 				},
 				removeItem: function (model) {
 					this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
@@ -359,16 +377,12 @@
 					this.done  		  = options.done;
 					this.successText  = options.successText;
 					this.successAudio = options.successAudio;
+					this.winText  	  = options.winText;
+					this.winAudio 	  = options.winAudio;
 					this.player		  = $('.player');
 
-					if (this.doing) {
-						this.listenTo(this.doing, 'add', this.update);
-						this.listenTo(this.doing, 'remove', this.update);
-					}
-					if (this.done) {
-						this.listenTo(this.done, 'add', this.update);
-						this.listenTo(this.done, 'remove', this.update);
-					}
+					if (this.doing) this.listenTo(this.doing, 'add', this.update);
+					if (this.done)  this.listenTo(this.done, 'add', this.update);
 					this.update({}, { silent: true });
 				},
 				update: function(model, options) {
@@ -380,40 +394,55 @@
 					this.$el.find('.progress-percent').text(percent + "%");
 
 					// show a success message
-					if (!options.silent && this.percent < percent) this.checked();
 					if (!options.silent && percent == 100) this.complete();
+					else if (!options.silent && this.percent < percent) this.checked();
 
 					// keep track of progress
 					this.percent = percent;
 				},
 				checked: function() {
 					var _this = this,
-						i 	  = _.random(0, this.successText.length),
-						x 	  = _.random(0, this.successAudio.length);
+						i 	  = _.random(0, this.successText.length-1),
+						x 	  = _.random(0, this.successAudio.length-1);
 
 					// play a song
-					var source= document.createElement('source');
-					if (this.player[0].canPlayType('audio/mpeg;')) {
-					    source.type= 'audio/mpeg';
-					    source.src= '/audio/'+ this.successAudio[x] +'.mp3';
-					} else {
-					    source.type= 'audio/ogg';
-					    source.src= '/audio/'+ this.successAudio[x] +'.ogg';
-					}
-
-					this.player[0].appendChild(source);
-					this.player[0].play();
+					this.playTrack(this.successAudio[x]);
 
 					// show some text
-					this.$el.find('.success-msg').text(this.successText[i]).addClass('active');
+					this.$el.find('.success-msg').html("<span class='pump-it'>" + this.successText[i] + "</span>").addClass('active');
 
 					this.player.on('ended', function() {
 						_this.$el.find('.success-msg').removeClass('active');
 					});
 				},
 				complete: function() {
+					var _this = this;
 
+					// play a song
+					this.playTrack(this.winAudio);
+
+					// show some text
+					this.$el.find('.win-msg').html("<span class='pump-it'>" + this.winText + "</span>").addClass('active');
+
+					this.player.on('ended', function() {
+						_this.$el.find('.win-msg').removeClass('active');
+					});
 				},
+				playTrack: function(track) {
+					var source= document.createElement('source');
+					if (this.player[0].canPlayType('audio/mpeg;')) {
+					    source.type= 'audio/mpeg';
+					    source.src= '/audio/'+ track +'.mp3';
+					} else {
+					    source.type= 'audio/ogg';
+					    source.src= '/audio/'+ track +'.ogg';
+					}
+
+					this.player.empty();
+					this.player[0].appendChild(source);
+					this.player[0].load();
+					this.player[0].play();
+				}
 			});
 
 			var task = Backbone.Model.extend({
@@ -466,6 +495,8 @@
 				done  	     : done,
 				successText  : ["Eff Yeah!", "Oh Snap!", "SHOTS!"],
 				successAudio : ["final-countdown", "Shots"],
+				winText      : "MONEY!",
+				winAudio 	 : ["Shots"],
 			});
 
 			window.todoAPI = {
