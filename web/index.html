@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>AWSM TODO</title>
+		<title>RIDICULIST</title>
 		<meta name="description" content="The most ridiculous TODO list ever created.">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -51,6 +51,13 @@
 				padding: 0;
 				line-height: 30px;
 				height: 30px;
+			}
+
+			.checkbox.faded h4,
+			p {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				word-wrap: break-word;
 				overflow: hidden;
 			}
 
@@ -237,7 +244,7 @@
 	<body>
 
 		<div id="splash" class="fade-out">
-			<h1>AWSM List <small>1.0</small></h1>
+			<h1>RIDICULIST</h1>
 		</div>
 
 		<div id="content" class="row">
@@ -378,11 +385,7 @@
 					var $node = this.$itemTpl.clone();
 					$node.attr("data-id", model.get("id"));
 					$node.find("h2").text(model.get("title"));
-
-					var para = model.get("para");
-					if (para.length > 50) para = para.slice(0, 50) + "...";
-
-					$node.find("p").text(para);
+					$node.find("p").text(model.get("para"));
 					$node.find(".assigned").html("<small>" + model.get("assigned") + "</small>");
 
 					return $node;
