@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<title>AWSM TODO</title>
-		<meta name="description" content="Join the XO movement">
+		<meta name="description" content="The most ridiculous TODO list ever created.">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<link rel="icon" href="/img/favicon@2x.png">
@@ -17,14 +17,13 @@
 				font-family: "Open Sans";
 				font-size: 20px;
 				margin: 0;
-				padding: 20px;
+				padding: 0 20px 30px 20px;
 			}
 
 			h1 {
-				font-size: 30px;
-				margin: 0 10px 30px 10px;
-				border-bottom: 2px solid #191919;
-				padding: 0 0 10px 0;
+				font-size: 50px;
+				margin: 0;
+				padding: 0;
 			}
 
 			h2 {
@@ -37,12 +36,25 @@
 				padding: 0;
 			}
 
-			p {
-				margin: 0;
+			h3 {
+				font-size: 18px;
+				text-transform: uppercase;
+				color: #666;
+				letter-spacing: 2px;
+				font-weight: bold;
+				margin: 30px 0 20px 0;
 				padding: 0;
 			}
 
-			p strong {
+			p {
+				margin: 0;
+				padding: 0;
+				line-height: 30px;
+				height: 30px;
+				overflow: hidden;
+			}
+
+			.assigned {
 				color: #666;
 				font-weight: bold;
 				font-size: 16px;
@@ -70,21 +82,23 @@
 				margin: 0 !important;
 				padding: 10px;
 				cursor: pointer;
-				height: 80px;
 				overflow: hidden;
 				-webkit-transition: background 300ms ease-in-out;
+				-webkit-border-radius: 14px;
+				-moz-border-radius: 14px;
+				-o-border-radius: 14px;
+				border-radius: 14px;
 			}
 
 			.checkbox:hover {
-				background: #191919;
+				background: #111;
 			}
 
 			.checkbox:hover i.fa {
 				color: #333;
 			}
 
-			.checkbox.faded h2,
-			.checkbox.faded p {
+			.checkbox.faded h4 {
 				color: #444;
 			}
 
@@ -99,7 +113,7 @@
 				left: 0px;
 				width: 100%;
 				height: 40px;
-				background: #191919;
+				background: #111;
 			}
 
 			.progress-inner {
@@ -120,17 +134,18 @@
 				right: -80px;
 				top: 0px;
 				line-height: 40px;
+				font-size: 20px;
 			}
 
 			.success-msg {
 				color: #FFF;
-				font-size: 220px;
+				font-size: 210px;
 				font-weight: bold;
 				text-align: center;
 				line-height: 400px;
 				height: 400px;
 				width: 100%;
-				position: absolute;
+				position: fixed;
 				top: 50%;
 				left: 0px;
 				margin-top: -200px;
@@ -163,38 +178,86 @@
 				50%  { -webkit-transform: scale3d(1.2, 1.2, 1.2); }
 			}
 
+			#splash {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+				background: #000;
+				text-align: center;
+				line-height: 100%;
+				z-index: 2;
+				opacity: 1;
+			}
+
+			#splash h1 {
+				position: absolute;
+				top: 50%;
+				height: 100px;
+				width: 100%;
+				line-height: 100px;
+				margin-top: -50px;
+			}
+
+			.fade-out {
+			    -webkit-animation: fadeOut ease-in 500ms forwards 700ms;
+			    -moz-animation:    fadeOut ease-in 500ms forwards 700ms;
+			    animation:         fadeOut ease-in 500ms forwards 700ms;
+			}
+
+			@-webkit-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+			@-moz-keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
+			@keyframes fadeOut { from { opacity:1; } to { opacity:0; } }
 		</style>
 	</head>
-
 	<body>
 
-		<div class="row">
+		<div id="splash" class="fade-out">
 			<h1>Launch Checklist</h1>
-			<ul class="checklist">
-				<li class="checkbox tpl col-lg-6">
-					<div class="pull-left"><i class="fa fa-circle-o"></i></div>
-					<div class="overflow">
-						<h2></h2>
-						<p></p>
-					</div>
-					<div class="clearfix"></div>
-				</li>
-			</ul>	
 		</div>
 
-		<div class="progress-bar">
-			<div class="progress-inner">
-				<div class="progress-percent">30%</div>
+		<div id="content" class="row">
+
+			<div id="doing">
+				<h3>DOING</h3>
+				<ul class="checklist">
+					<li class="checkbox tpl col-lg-6">
+						<div class="pull-left"><i class="fa fa-circle-o"></i></div>
+						<div class="overflow">
+							<h2></h2>
+							<p></p>
+							<div class="assigned"></div>
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				</ul>
+			</div>
+
+			<div id="done">
+				<h3>DONE</h3>
+				<ul class="checklist">
+					<li class="checkbox tpl col-lg-4 faded">
+						<div class="pull-left"><i class="fa fa fa-check-circle-o"></i></div>
+						<div class="overflow">
+							<h4></h4>
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				</ul>
+			</div>
+
+			<div id="progress">
+				<div class="progress-bar">
+					<div class="progress-inner">
+						<div class="progress-percent">30%</div>
+					</div>
+				</div>
+				<div class="success-msg"></div>
+				<audio class="player" preload></audio>
 			</div>
 		</div>
 
-		<div class="success-msg">SHOTS!</div>
-
-		<audio class="player" preload>
-			<source src="/audio/final-countdown.ogg" type="audio/ogg" />
-			<source src="/audio/final-countdown.mp3" type="audio/mp3" />
-			Your browser does not support the audio element.
-		</audio>
 
 		<!-- zerver:/js/main.min.js -->
 		<script src="/js/libs/jquery.2.0.3.min.js"></script>
@@ -206,29 +269,27 @@
 
 		<script>
 
-			var tasks;
-
-			var view = Backbone.View.extend({
-				el : '.checklist',
-				initialize: function() {
+			var listView = Backbone.View.extend({
+				initialize: function(options) {
 					var _this = this;
 
-					this.player = $('.player')[0];
+					if (options.collection) this.collection = options.collection;
 
-					this.$itemTpl = this.$el.find('.tpl');
+					this.$itemTpl = this.$el.find('li.tpl');
 					this.$itemTpl.remove();
 
-					tasks = new collection();
-					this.listenTo(tasks,'add', this.addItem);
-					this.listenTo(tasks,'remove', this.removeItem);
+					// bind UI to collection events
+					if(this.collection) {
+						this.listenTo(this.collection, 'add', this.addItem);
+						this.listenTo(this.collection, 'remove', this.removeItem);
 
-					var frag = document.createDocumentFragment();
-					_.each(tasks.models, function(model) {
-						frag.appendChild(_this.renderItem(model)[0]);
-					});
+						var frag = document.createDocumentFragment();
+						_.each(_this.collection.models, function(model) {
+							frag.appendChild(_this.renderItem(model)[0]);
+						});
 
-					this.$el.html(frag);
-					this.updateProgress();
+						this.$el.find("ul").html(frag);
+					}
 				},
 				renderItem: function(model) {
 					var $node = this.$itemTpl.clone();
@@ -242,44 +303,128 @@
 					return $node;
 				},
 				addItem: function (model) {
-					this.$el.append(this.renderItem(model));
-					this.updateProgress();	
+					this.$el.removeClass("hidden").find("ul").append(this.renderItem(model));
+					$('html, body').animate({
+				        scrollTop: this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").offset().top
+				    }, 500);
 				},
 				removeItem: function (model) {
 					this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
-					this.updateProgress();
+					if (this.collection.length == 0) this.$el.addClass("hidden")
 				},
 				events: {
 					"click .checkbox" : "toggleChecked",
 				},
 				toggleChecked: function(e) {
 					var $item = $(e.currentTarget);
-					var model = tasks.get($item.attr('data-id'));
+					var model = this.collection.get($item.attr('data-id'));
 					var _this = this;
-
-					model.set("checked", !model.get("checked"))
-					$item.replaceWith(this.renderItem(model));
-
-					if (model.get("checked")) {
-						_this.player.play();
-						$('.success-msg').addClass('active');
-						setTimeout(function() {
-							$('.success-msg').removeClass('active');
-						}, 16000);
-					}
-				},
-				updateProgress: function() {
-					var checked = tasks.where({ "checked": true });
-					var percent = parseInt((100/tasks.models.length) * checked.length);
-					$('.progress-inner').css("width", percent + "%");
-					$('.progress-percent').text(percent + "%");
+					model.set("checked", !model.get("checked"));
 				},
 			});
 
-			var model = Backbone.Model.extend({
+			var doneView = listView.extend({
+				el: "#done",
+				renderItem: function(model) {
+					var $node = this.$itemTpl.clone();
+					$node.attr("data-id", model.get("id"));
+					$node.find("h4").text(model.get("title"));
+			
+					return $node;
+				},
+			});
+
+			var doingView = listView.extend({
+				el: "#doing",
+				renderItem: function(model) {
+					var $node = this.$itemTpl.clone();
+					$node.attr("data-id", model.get("id"));
+					$node.find("h2").text(model.get("title"));
+
+					var para = model.get("para");
+					if (para.length > 50) para = para.slice(0, 50) + "...";
+
+					$node.find("p").text(para);
+					$node.find(".assigned").html("<small>" + model.get("assigned") + "</small>");
+
+					return $node;
+				},
+			});
+
+			var progressView = Backbone.View.extend({
+				el: "#progress",
+				percent: 0,
+				initialize: function(options) {
+					this.doing 		  = options.doing;
+					this.done  		  = options.done;
+					this.successText  = options.successText;
+					this.successAudio = options.successAudio;
+					this.player		  = $('.player');
+
+					if (this.doing) {
+						this.listenTo(this.doing, 'add', this.update);
+						this.listenTo(this.doing, 'remove', this.update);
+					}
+					if (this.done) {
+						this.listenTo(this.done, 'add', this.update);
+						this.listenTo(this.done, 'remove', this.update);
+					}
+					this.update({}, { silent: true });
+				},
+				update: function(model, options) {
+					var total   = doing.length + done.length,
+						percent = parseInt((100/total) * done.length) || 0;
+
+					// update the progress indicator
+					this.$el.find('.progress-inner').css("width", percent + "%");
+					this.$el.find('.progress-percent').text(percent + "%");
+
+					// show a success message
+					if (!options.silent && this.percent < percent) this.checked();
+					if (!options.silent && percent == 100) this.complete();
+
+					// keep track of progress
+					this.percent = percent;
+				},
+				checked: function() {
+					var _this = this,
+						i 	  = _.random(0, this.successText.length),
+						x 	  = _.random(0, this.successAudio.length);
+
+					// play a song
+					var source= document.createElement('source');
+					if (this.player[0].canPlayType('audio/mpeg;')) {
+					    source.type= 'audio/mpeg';
+					    source.src= '/audio/'+ this.successAudio[x] +'.mp3';
+					} else {
+					    source.type= 'audio/ogg';
+					    source.src= '/audio/'+ this.successAudio[x] +'.ogg';
+					}
+
+					this.player[0].appendChild(source);
+					this.player[0].play();
+
+					// show some text
+					this.$el.find('.success-msg').text(this.successText[i]).addClass('active');
+
+					this.player.on('ended', function() {
+						_this.$el.find('.success-msg').removeClass('active');
+					});
+				},
+				complete: function() {
+
+				},
+			});
+
+			var task = Backbone.Model.extend({
 				validate: function(attrs, options) {
 					if (!attrs || !attrs.title || !attrs.para || !attrs.assigned) {
 						var msg = "missing required fields";
+						console.error(msg);
+				      	return msg;
+				    }
+				    if (attrs.para.length > 50) {
+				    	var msg = "para is too long";
 						console.error(msg);
 				      	return msg;
 				    }
@@ -287,46 +432,63 @@
 			});
 
 			var collection = Backbone.Collection.extend({
-				storageKey: "launchChecklist",
-				model: model,
-				initialize: function() {
-					this.set(DB.read(this.storageKey));
+				storageKey: "AWSM-TODO",
+				model: task,
+				initialize: function(models, options) {
+					if (options.storageKey) this.storageKey = options.storageKey;
+					
+					// setup event listeners
 					this.on("add", this.saveToDB, this);
 					this.on("remove", this.saveToDB, this);
-                	this.on("change:checked", this.saveToDB, this);
-				},
-				checkChecked: function() {
-					var _this = this,
-						local = DB.read(this.storageKey);
-
-					if (local) {
-						_.each(local, function(model) {
-							var m = _this.get(model.id);
-							if (m) m.set({ "checked": model.checked }, { silent: true });
-						});
-					}
-
-					this.updateProgress();
 				},
 				saveToDB: function(model, val, options) {
 					DB.write(this.storageKey, this.models);
 				},
 			});
 
-			new view();
+			var doing = new collection(DB.read('AWSM-doing'), { storageKey: 'AWSM-doing' }),
+				done  = new collection(DB.read('AWSM-done'),  { storageKey: 'AWSM-done'  });
+
+			doing.on("change:checked", function(model) {
+				doing.remove(model);
+				done.add(model);
+			});
+
+			done.on("change:checked", function(model) {
+				done.remove(model);
+				doing.add(model);
+			});
+
+			new doingView({ collection: doing });
+			new doneView({ collection: done });
+			new progressView({ 
+				doing 		 : doing,
+				done  	     : done,
+				successText  : ["Eff Yeah!", "Oh Snap!", "SHOTS!"],
+				successAudio : ["final-countdown", "Shots"],
+			});
 
 			window.todoAPI = {
 				addItem : function(payload) {
-					payload['id'] = tasks.models.length+1;
-					var m = new model();
-					m.set(payload, { validate:true });
-					tasks.add(m);
+					payload['id'] = doing.length + 1;
+					payload['created'] = new Date().getTime();
+					var model = new task();
+					model.set(payload, { validate:true });
+					doing.add(model);
 				},
-				removeItem : function(model_id) {
-					var model = tasks.get(model_id);
-					tasks.remove(model);
+				removeDoingItem : function(model_id) {
+					var model = doing.get(model_id);
+					doing.remove(model);
+				},
+				removeDoneItem : function(model_id) {
+					var model = done.get(model_id);
+					done.remove(model);
 				},
 			}
+
+			setTimeout(function() {
+				$('#splash').addClass("hidden");
+			}, 1200);
 
 		</script>
 
