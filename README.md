@@ -3,20 +3,20 @@ RIDICULIST
 
 Probably the most ridiculous list you've ever seen.
 
-INSTALLATION
+**INSTALLATION**
 
-install node dependancies
+**install node dependancies**
     ```npm install```
     
-start the server
+**start the server**
     ```npm start```
     
 
-USAGE
+**USAGE**
 
 currently, you manage tasks using the console in your browser.
 
-adding a task
+**adding a task**
 ```
 todoAPI.addItem({
   "title" : "short description",
@@ -25,7 +25,7 @@ todoAPI.addItem({
 });
 ```
 
-remove a task
+**remove a task**
 ```
 todoAPI.removeDoneItem(item_id);
 todoAPI.removeDoingItem(item_id);
