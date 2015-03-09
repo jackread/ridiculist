@@ -521,7 +521,7 @@
 
 			window.todoAPI = {
 				addItem : function(payload) {
-					payload['id'] = done.length + doing.length + 1;
+					payload['id'] = done.length + doing.length + 21;
 					payload['created'] = new Date().getTime();
 					var model = new task();
 					model.set(payload, { validate:true });
