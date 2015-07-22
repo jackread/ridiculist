@@ -493,6 +493,10 @@
 				saveToDB: function(model, val, options) {
 					DB.write(this.storageKey, this.models);
 				},
+				destroy: function() {
+					this.reset();
+					DB.remove(this.storageKey);	
+				}
 			});
 
 			var doing = new collection(DB.read('AWSM-doing'), { storageKey: 'AWSM-doing' }),
@@ -535,6 +539,11 @@
 					var model = done.get(model_id);
 					done.remove(model);
 				},
+				destroy: function() {
+					doing.destroy();
+					done.destroy();
+					window.location.reload();
+				}
 			}
 
 			setTimeout(function() {
