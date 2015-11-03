@@ -71,7 +71,7 @@
 	                                        <small class="subhead">Launch something - Be ridiculous</small>
 	                                    </div>
                                         <div class="white-box">
-                                            <p><small>Provide us with your username and password and we&rsquo;ll have you on your way!</small></p>
+                                            <p><small>Provide us with your Email Address and Password and we&rsquo;ll have you on your way!</small></p>
                                             <div class="form-group top-pad">
                                                 <input type="email" autocapitalize="off" class="form-control first" id="signupEmailAddress" placeholder="Email Address">
                                             </div>
@@ -96,64 +96,100 @@
         </script>
 
 		<script type="text/template" id="listTPL">
-				<div id="doing">
-					<h3>DOING</h3>
-					<ul class="checklist row">
-						<li class="checkbox tpl col-lg-6">
-							<div class='checkbox-inner'>
-								<div class="pull-left"><i class="fa fa-circle-o"></i></div>
-								<div class="overflow">
-									<h2></h2>
-									<p></p>
-									<div class="assigned"></div>
-								</div>
-								<div class="clearfix"></div>
+			<div id="doing">
+				<h3>DOING</h3>
+				<ul class="checklist row">
+					<li class="checkbox tpl col-lg-6">
+						<div class='checkbox-inner'>
+							<div class="pull-left"><i class="fa fa-circle-o"></i></div>
+							<div class="overflow">
+								<h2></h2>
+								<p></p>
+								<div class="assigned"></div>
 							</div>
-						</li>
-					</ul>
-				</div>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
 
-				<div id="done">
-					<h3>DONE</h3>
-					<ul class="checklist row">
-						<li class="checkbox tpl col-sm-6 col-md-4 col-lg-3 faded">
-							<div class='checkbox-inner'>
-								<div class="pull-left"><i class="fa fa fa-check-circle-o"></i></div>
-								<div class="overflow">
-									<h4></h4>
-								</div>
-								<div class="clearfix"></div>
+			<div id="add">
+				<button class="btn btn-border" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Add an Item</button>
+			</div>
+
+			<div id="done">
+				<h3>DONE</h3>
+				<ul class="checklist row">
+					<li class="checkbox tpl col-sm-6 col-md-4 col-lg-3 faded">
+						<div class='checkbox-inner'>
+							<div class="pull-left"><i class="fa fa fa-check-circle-o"></i></div>
+							<div class="overflow">
+								<h4></h4>
 							</div>
-						</li>
-					</ul>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+       
+			<div id="progress">
+				<div class="progress-bar">
+					<div class="progress-inner">
+						<div class="progress-percent">30%</div>
+					</div>
 				</div>
-	       
-				<div id="progress">
-					<div class="progress-bar">
-						<div class="progress-inner">
-							<div class="progress-percent">30%</div>
+				<div class="success-msg"></div>
+				<div class="win-msg"></div>
+				<audio class="player" preload></audio>
+			</div>
+
+			<div class="modal fade" id="addModal">
+				<form id="addForm" class="form">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Add a TODO Item</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label>Title</label>
+									<input type="text" class="form-control" id="addTitle" placeholder="Title..." />
+								</div>
+								<div class="form-group">
+									<label>Description</label>
+									<textarea class="form-control" id="addDescription" placeholder="Description..."></textarea>
+									<small class="help-block">A short description for your TODO item.</small>
+								</div>
+								<div class="form-group">
+									<label>Assigned</label>
+									<input type="text" class="form-control" id="addAssigned" placeholder="Assigned..." />
+									<small class="help-block">The user assigned to this task.</small>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-sm btn-success save">Save TODO Item</button>
+							</div>
 						</div>
 					</div>
-					<div class="success-msg"></div>
-					<div class="win-msg"></div>
-					<audio class="player" preload></audio>
-				</div>
+				</form>
 			</div>
 		</script>
 
-		<!-- zerver:/js/ridiculist.min.js -->
 		<script src="/js/libs/jquery.2.0.3.min.js"></script>
 		<script src="/js/libs/bootstrap.3.2.0.min.js"></script>
 		<script src="/js/libs/underscore.1.5.2.min.js"></script>
 		<script src="/js/libs/backbone.1.1.2.min.js"></script>
-		<script src="/js/libs/firebase.2.2.7.min.js"></script>
-		<script src="/js/libs/backbonefire.0.5.1.min.js"></script>
+		<!--<script src="/js/libs/firebase.2.2.7.min.js"></script>
+		<script src="/js/libs/backbonefire.0.5.1.min.js"></script>-->
+		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+		<script src="https://cdn.firebase.com/libs/backbonefire/0.5.1/backbonefire.min.js"></script>
 		<script src="/js/libs/db.js"></script>
 		<script src="/js/libs/msg.js"></script>
 		<script src="/js/models.js"></script>
 		<script src="/js/views.js"></script>
 		<script src="/js/main.js"></script>
-		<!-- /zerver -->
 
 		<script>
 

@@ -39,8 +39,7 @@ function notFound() {
     return;
 }
 
-var todo      = new collection(),
-    ref       = todo.firebase,
+var ref       = new Firebase("https://ridiculistapp.firebaseio.com/");
     authData  = ref.getAuth();
     user      = null;
 
@@ -111,14 +110,12 @@ function doLogin(email, password, callback) {
                 callback(true);
             }
         }
-        else {
-            callback(false);
-        }
+        else callback(false);
     });
 }
 
 /** DEFINE THE API **/
-window.RIDICULIST = {
+/*window.RIDICULIST = {
     addItem : function(payload) {
         payload['id'] = done.length + doing.length + 1;
         payload['created'] = new Date().getTime();
@@ -134,4 +131,4 @@ window.RIDICULIST = {
         todo.destroy();
         window.location.reload();
     }
-}
+}*/

@@ -40,15 +40,14 @@ views.loginPage = Backbone.View.extend({
             var el = _this.$el.find('#login-form button[type="submit"]'),
                 existing = el.html();
 
-            el.html("<i class='icon-spinner icon-spin'></i> Please wait...");
+            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
             
             doLogin($email.val(), $password.val(), function(err){
                 if (err) {
                     _this.inProgress = false;
                     el.html(existing);
-                    return;
                 }
-                Backbone.history.navigate('/list', true);
+                else Backbone.history.navigate('/list', true);
             });
         }
     },
@@ -94,7 +93,7 @@ views.signupPage = Backbone.View.extend({
             var el = _this.$el.find('#signup-form button[type="submit"]'),
                 existing = el.html();
 
-            el.html("<i class='icon-spinner icon-spin'></i> Please wait...");
+            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
 
             ref.createUser({
                 email    : $email.val(),
@@ -127,9 +126,8 @@ views.signupPage = Backbone.View.extend({
                         if (err) {
                             _this.inProgress = false;
                             el.html(existing);
-                            return;
                         }
-                        Backbone.history.navigate('/list', true);
+                        else Backbone.history.navigate('/list', true);
                     });
                 }
             });
@@ -140,7 +138,7 @@ views.signupPage = Backbone.View.extend({
 views.listPage = Backbone.View.extend({
     initialize: function(options) {
 
-        if (user) {
+        if (!user) {
             Backbone.history.navigate('/login', true);
             return;
         }
@@ -152,15 +150,72 @@ views.listPage = Backbone.View.extend({
 
         this.$el.html(_.template($('#listTPL').html(), { 'options': this.options }));
 
-        new views.doingView({ collection: todo, checked: false, });
-        new views.doneView({ collection: todo, checked: true, });
+        var collection = Backbone.Firebase.Collection.extend({
+            model: task,
+            url: "https://ridiculistapp.firebaseio.com/todos/" + user.uid,
+        });
+
+        this.todo = new collection();
+
+        new views.doingView({ collection: this.todo, checked: false, });
+        new views.doneView({ collection: this.todo, checked: true, });
         new views.progressView({ 
-            collection   : todo,
+            collection   : this.todo,
             successText  : ["Eff Yeah!", "Oh Snap!", "SHOTS!"],
             successAudio : ["final-countdown", "Shots"],
             winText      : "MONEY!",
             winAudio     : ["Shots"],
         });
+    },
+    events: {
+        "submit #addForm" : 'validateForm'
+    },
+    validateForm: function (e) {
+        e.preventDefault();
+
+        var _this     = this,
+            $title       = _this.$el.find('#addTitle'),
+            $description = _this.$el.find('#addDescription'),
+            $assigned    = _this.$el.find('#addAssigned');
+
+        // reset errors
+        _this.$el.find('.has-error').removeClass('has-error');
+
+        if(!$title.val() || !$description.val() || !$assigned.val()) {
+            new alertView({
+                msg:  'missing required fields',
+                type: 'warning',
+            });
+            if(!$title.val())       $title.parent().addClass('has-error');
+            if(!$description.val()) $description.parent().addClass('has-error');
+            if(!$assigned.val())    $assigned.parent().addClass('has-error');
+        }
+        else if(!_this.inProgress) {
+            _this.inProgress = true;
+            
+            var el       = _this.$el.find('#addform button[type="submit"]'),
+                existing = el.html();
+
+            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
+            
+            var model = new task();
+            model.set({
+                'title'       : $title.val(),
+                'description' : $description.val(),
+                'assigned'    : $assigned.val(),
+                'created'     : new Date().getTime(),
+                'id'          : "todo-" + new Date().getTime()
+            }, { validate:true });
+            
+            _this.todo.add(model);
+            el.html(existing);
+            _this.inProgress = false;
+
+            $title.val('');
+            $description.val('');
+            $assigned.val('');
+            _this.$el.find('#addModal').modal('hide');
+        }
     }
 });
 
@@ -192,7 +247,7 @@ views.listView = Backbone.View.extend({
         var $node = this.$itemTpl.clone();
         $node.attr("data-id", model.get("id"));
         $node.find("h2").text(model.get("title"));
-        $node.find("p").html(model.get("para") + " <strong><small>" + model.get("assigned") + "</small></strong>");
+        $node.find("p").html(model.get("description") + " <strong><small>" + model.get("assigned") + "</small></strong>");
         if (model.get("checked")) {
             $node.addClass("faded")
             $node.find("i.fa").replaceWith("<i class='fa fa-check-circle-o white'></i>");
@@ -200,42 +255,27 @@ views.listView = Backbone.View.extend({
         return $node;
     },
     changeItem: function(model) {
-        if (model.get('checked') == this.checked) this.addItem(model);
+        if (model.get('checked') === this.checked) this.addItem(model);
         else this.removeItem(model);
     },
     addItem: function (model) {
         this.$el.removeClass("hidden");
-        var $node = this.renderItem(model),
-            m_id  = "";
-
-        _.each(this.collection.models, function(m) {
-            if (!m_id && m.get("id") > model.get("id")) {
-                m_id = m.get("id");
-            }
-        });
-
-        if (m_id) {
-            var $elder = this.$el.find(".checkbox[data-id='"+ m_id +"']");
-            $node.insertBefore($elder);
-        }
-        else {
-            this.$el.find("ul").append($node);
-        }
-
+        var $node = this.renderItem(model);
+        this.$el.find("ul").prepend($node);
     },
     removeItem: function (model) {
         this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
         if (this.collection.length == 0) this.$el.addClass("hidden")
     },
     events: {
-        "click .checkbox" : "toggleChecked",
+        "click .checkbox" : "toggleChecked"
     },
     toggleChecked: function(e) {
         var $item = $(e.currentTarget);
         var model = this.collection.get($item.attr('data-id'));
         var _this = this;
         model.set("checked", !model.get("checked"));
-    },
+    }
 });
 
 views.doneView = views.listView.extend({
@@ -255,7 +295,7 @@ views.doingView = views.listView.extend({
         var $node = this.$itemTpl.clone();
         $node.attr("data-id", model.get("id"));
         $node.find("h2").text(model.get("title"));
-        $node.find("p").text(model.get("para"));
+        $node.find("p").text(model.get("description"));
         $node.find(".assigned").html("<small>" + model.get("assigned") + "</small>");
 
         return $node;
