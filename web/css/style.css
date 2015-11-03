@@ -15,6 +15,11 @@ h1 {
 	font-size: 50px;
 	margin: 0;
 	padding: 0;
+	font-weight: 300;
+}
+
+h1 strong {
+	font-weight: 700;
 }
 
 h2 {
@@ -274,7 +279,7 @@ i.fa {
 }
 
 .white-box-footer {
-    margin-top: 15px;
+    margin-top: 30px;
     text-align: center;
 }
 
