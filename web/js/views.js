@@ -2,6 +2,12 @@ var views = {}
 
 views.loginPage = Backbone.View.extend({
     initialize: function(options) {
+
+        if (user) {
+            Backbone.history.navigate('/list', true);
+            return;
+        }
+
         this.options = options;
         this.render();
     },
@@ -45,6 +51,12 @@ views.loginPage = Backbone.View.extend({
 
 views.signupPage = Backbone.View.extend({
     initialize: function(options) {
+
+        if (user) {
+            Backbone.history.navigate('/list', true);
+            return;
+        }
+
         this.options = options;
         this.render();
     },
@@ -117,6 +129,12 @@ views.signupPage = Backbone.View.extend({
 
 views.listPage = Backbone.View.extend({
     initialize: function(options) {
+
+        if (user) {
+            Backbone.history.navigate('/login', true);
+            return;
+        }
+
         this.options = options;
         this.render();
     },

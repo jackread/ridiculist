@@ -6,13 +6,16 @@ var AppRouter = Backbone.Router.extend ({
 
         if (path == 'logout') {
             ref.unauth();
+            Backbone.history.navigate('/login', true);
             return;
         }
 
-        // all not founds could be a short URL
-        var view = path ? path.split('/')[0].replace('-', '_') : 'login';
+        var defaultView = user ? 'list' : 'login';
 
-        if (views && !views[view + "Page"]) view = 'login';
+        // all not founds could be a short URL
+        var view = path ? path.split('/')[0].replace('-', '_') : defaultView;
+
+        if (views && !views[view + "Page"]) view = defaultView;
 
         // kill some zombies
         if (active) active.kill();
