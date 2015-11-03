@@ -391,4 +391,6 @@ i.fa {
 
 #add {
 	margin-bottom: 70px;
+	display: block;
+	overflow: hidden;
 }
