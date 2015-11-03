@@ -312,12 +312,20 @@ views.progressView = Backbone.View.extend({
         this.winText      = options.winText;
         this.winAudio     = options.winAudio;
         this.player       = $('.player');
+        this.initialized  = false;
 
-        if (this.collection) this.listenTo(this.collection, 'change', this.update);
-        this.update({}, { silent: true });
+        if (this.collection) {
+            this.listenTo(this.collection, 'change', this.update);
+            this.listenTo(this.collection, 'add', this.update);
+            this.listenTo(this.collection, 'remove', this.update);
+        }
+
+        var _this = this;
+        setTimeout(function(){
+            _this.initialized = true;
+        }, 2000);
     },
     update: function(model, options) {
-
         var doing = this.collection.where({ checked: false }),
             done  = this.collection.where({ checked: true });
 
@@ -329,8 +337,8 @@ views.progressView = Backbone.View.extend({
         this.$el.find('.progress-percent').text(percent + "%");
 
         // show a success message
-        if (!options.silent && percent == 100) this.complete();
-        else if (!options.silent && this.percent < percent) this.checked();
+        if (this.initialized && percent == 100) this.complete();
+        else if (this.initialized && this.percent < percent) this.checked();
 
         // keep track of progress
         this.percent = percent;

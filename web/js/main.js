@@ -65,6 +65,12 @@ function getName(authData) {
 var app = new AppRouter;
 Backbone.history.start({ pushState: true });
 
+// the splash is gone
+var splashIsGone = false;
+setTimeout(function() {
+    splashIsGone = true;
+}, 3000);
+
 // override link clicks to use push state
 $(document).on('click', 'a:not([data-bypass])', function(e){
     var href = $(this).prop('href')
