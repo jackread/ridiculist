@@ -50,7 +50,7 @@ h3 {
 	text-transform: lowercase;
 }
 
-.checkbox.faded h4,
+.todobox.faded h4,
 .checklist p {
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -81,7 +81,7 @@ i.fa {
 	overflow: hidden;
 }
 
-.checkbox-inner {
+.todobox-inner {
 	display: block;
 	margin: 0 !important;
 	padding: 10px;
@@ -94,20 +94,20 @@ i.fa {
 	border-radius: 14px;
 }
 
-.checkbox:hover .checkbox-inner {
+.todobox:hover .todobox-inner {
 	background: #111;
 }
 
-.checkbox:hover .checkbox-inner i.fa {
+.todobox:hover .todobox-inner i.fa {
 	color: #333;
 }
 
-.checkbox.faded h4 {
+.todobox.faded h4 {
 	color: #444;
 	text-transform: capitalize;
 }
 
-.checkbox.faded i.fa {
+.todobox.faded i.fa {
 	color: #F09;
 	-webkit-animation: color-pulse 30s linear infinite alternate;
 }

@@ -263,11 +263,11 @@ views.listView = Backbone.View.extend({
         this.$el.find("ul").prepend($node);
     },
     removeItem: function (model) {
-        this.$el.find(".checkbox[data-id='"+ model.get("id") +"']").remove();
+        this.$el.find(".todobox[data-id='"+ model.get("id") +"']").remove();
         if (this.collection.length == 0) this.$el.addClass("hidden")
     },
     events: {
-        "click .checkbox" : "toggleChecked"
+        "click .todobox" : "toggleChecked"
     },
     toggleChecked: function(e) {
         var $item = $(e.currentTarget);
