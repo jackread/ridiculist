@@ -107,10 +107,12 @@ function doLogin(email, password, callback) {
                         msg:  "We couldn't log you in at this time. Please try again.",
                         type: 'warning',
                     });
+
+                callback(true);
             }
         }
         else {
-            callback();
+            callback(false);
         }
     });
 }

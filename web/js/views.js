@@ -42,7 +42,12 @@ views.loginPage = Backbone.View.extend({
 
             el.html("<i class='icon-spinner icon-spin'></i> Please wait...");
             
-            doLogin($email.val(), $password.val(), function(){
+            doLogin($email.val(), $password.val(), function(err){
+                if (err) {
+                    _this.inProgress = false;
+                    el.html(existing);
+                    return;
+                }
                 Backbone.history.navigate('/list', true);
             });
         }
@@ -119,6 +124,11 @@ views.signupPage = Backbone.View.extend({
                 }
                 else {
                     doLogin($email.val(), $password.val(), function(){
+                        if (err) {
+                            _this.inProgress = false;
+                            el.html(existing);
+                            return;
+                        }
                         Backbone.history.navigate('/list', true);
                     });
                 }
