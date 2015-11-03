@@ -353,6 +353,14 @@ i.fa {
 	color: #FFF;
 }
 
+.btn i.fa {
+	line-height: 20px;
+	font-size: 16px;
+	color: #FFF;
+	margin: 0;
+	padding: 0;
+}
+
 .btn.btn-border {
 	display: block;
 	max-width: 300px;

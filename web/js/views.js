@@ -40,7 +40,7 @@ views.loginPage = Backbone.View.extend({
             var el = _this.$el.find('#login-form button[type="submit"]'),
                 existing = el.html();
 
-            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
+            el.html("<i class='fa fa-spinner fa-spin'></i> Please wait...");
             
             doLogin($email.val(), $password.val(), function(err){
                 if (err) {
@@ -55,7 +55,6 @@ views.loginPage = Backbone.View.extend({
 
 views.signupPage = Backbone.View.extend({
     initialize: function(options) {
-
         if (user) {
             Backbone.history.navigate('/list', true);
             return;
@@ -93,7 +92,7 @@ views.signupPage = Backbone.View.extend({
             var el = _this.$el.find('#signup-form button[type="submit"]'),
                 existing = el.html();
 
-            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
+            el.html("<i class='fa fa-spinner fa-spin'></i> Please wait...");
 
             ref.createUser({
                 email    : $email.val(),
@@ -122,7 +121,7 @@ views.signupPage = Backbone.View.extend({
                     }
                 }
                 else {
-                    doLogin($email.val(), $password.val(), function(){
+                    doLogin($email.val(), $password.val(), function(err){
                         if (err) {
                             _this.inProgress = false;
                             el.html(existing);
@@ -196,7 +195,7 @@ views.listPage = Backbone.View.extend({
             var el       = _this.$el.find('#addform button[type="submit"]'),
                 existing = el.html();
 
-            el.html("<i class='fa-spinner fa-spin'></i> Please wait...");
+            el.html("<i class='fa fa-spinner fa-spin'></i> Please wait...");
             
             var model = new task();
             model.set({
