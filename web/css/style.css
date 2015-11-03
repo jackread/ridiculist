@@ -208,7 +208,13 @@ i.fa {
 	width: 100%;
 	line-height: 100px;
 	margin-top: -50px;
-	font-size: 90px;
+	font-size: 30px;
+}
+
+@media (min-width: 768px) {
+	#splash h1 {
+		font-size: 90px;
+	}
 }
 
 .fade-out {
@@ -276,4 +282,20 @@ i.fa {
 	background: rgba(255,255,255,0.2);
 	color: #000;
 	border: 1px solid rgba(255,255,255,0.2);
+}
+
+.subhead {
+	display: block;
+	margin: 0 0 50px 0;
+}
+
+.gradient a {
+	color: rgba(0,0,0,0.5);
+}
+
+.btn.btn-success {
+	background: rgba(0,0,0,0.5);
+	border-color: rgba(0,0,0,0.2);
+	color: #FFF;
+	padding: 15px 40px;
 }
