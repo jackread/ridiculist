@@ -151,7 +151,7 @@ views.listPage = Backbone.View.extend({
 
         var collection = Backbone.Firebase.Collection.extend({
             model: task,
-            url: "https://ridiculistapp.firebaseio.com/todos/" + user.uid,
+            url: "https://ridiculistapp.firebaseio.com/todos/53e02b39-660c-44be-a1f4-243ec7d2d0bc",
         });
 
         this.todo = new collection();
